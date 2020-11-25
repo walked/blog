@@ -9,5 +9,4 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install hugo
       - run: ls -la
-      - run: cat "./themes/layouts/partials/paginator.html"
       - run: hugo
