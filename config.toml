@@ -35,7 +35,7 @@ summaryLength = 20
     featherIconsCDN = true
 
     # Specify favicon (icons/i.png maps to static/icons/i.png). No favicon if not defined.
-    favicon = "icons/myicon.png"
+    favicon = "icons/favicon.ico"
 
     # Switch to dark mode or auto detect mode from OS (Optional).
     # "dark" will set mode to dark and "auto" will switch to dark mode if OS is in dark mode.
@@ -76,11 +76,11 @@ weight = 4
 
 # Social media links which shows up on site header.
 # Uses feather icons for icons. You can [search icon names from here](https://feathericons.com/).
-#[[params.social]]
-#name = "Github"
-#icon = "github"
-#url = "https://github.com/vividvilla/ezhil"
-#
+[[params.social]]
+name = "Github"
+icon = "github"
+url = "https://github.com/walked"
+
 #[[params.social]]
 #name = "Twitter"
 #icon = "twitter"
@@ -98,39 +98,15 @@ order = [".jpg$", ".gif$"]
 
 
 [[deployment.targets]]
-# An arbitrary name for this target.
-name = "s3deploy"
-# The Go Cloud Development Kit URL to deploy to. Examples:
-# GCS; see https://gocloud.dev/howto/blob/#gcs
-# URL = "gs://<Bucket Name>"
-
-# S3; see https://gocloud.dev/howto/blob/#s3
-# For S3-compatible endpoints, see https://gocloud.dev/howto/blob/#s3-compatible
+name = "s3-prod-deploy"
 URL = "s3://i-py.com?region=us-east-1"
-
-# Azure Blob Storage; see https://gocloud.dev/howto/blob/#azure
-# URL = "azblob://$web"
-
-# You can use a "prefix=" query parameter to target a subfolder of the bucket:
-# URL = "gs://<Bucket Name>?prefix=a/subfolder/"
-
-# If you are using a CloudFront CDN, deploy will invalidate the cache as needed.
 cloudFrontDistributionID = "E7N7EFXUP6W7H"
 
-# Optionally, you can include or exclude specific files.
-# See https://godoc.org/github.com/gobwas/glob#Glob for the glob pattern syntax.
-# If non-empty, the pattern is matched against the local path.
-# All paths are matched against in their filepath.ToSlash form.
-# If exclude is non-empty, and a local or remote file's path matches it, that file is not synced.
-# If include is non-empty, and a local or remote file's path does not match it, that file is not synced.
-# As a result, local files that don't pass the include/exclude filters are not uploaded to remote,
-# and remote files that don't pass the include/exclude filters are not deleted.
-# include = "**.html" # would only include files with ".html" suffix
-# exclude = "**.{jpg, png}" # would exclude files with ".jpg" or ".png" suffix
+[[deployment.targets]]
+name = "s3-staging-deploy"
+URL = "s3://staging.i-py.com?region=us-east-1"
 
 
-# [[deployment.matchers]] configure behavior for files that match the Pattern.
-# Samples:
 
 [[deployment.matchers]]
 #  Cache static assets for 1 year.
