@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Chef - Bootstrapping Windows in Service Mode - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Chef - Bootstrapping Windows in Service Mode" />
+<meta property="og:description" content="So; chef windows bootstrap doesnt have an install as service option. Dang it; that would be too convenient. Even the official docs dont say anything about it.." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2017-02-01-chef-windows-bootstrap-service/" />
+<meta property="article:published_time" content="2017-02-01T12:32:30-05:00" />
+<meta property="article:modified_time" content="2017-02-01T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Chef - Bootstrapping Windows in Service Mode"/>
+<meta name="twitter:description" content="So; chef windows bootstrap doesnt have an install as service option. Dang it; that would be too convenient. Even the official docs dont say anything about it.."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Chef - Bootstrapping Windows in Service Mode</h1>
+			<div class="meta">Posted on &mdash; Feb 1, 2017</div>
+		</div>
+
+		<div class="markdown">
+			<p>So; <code>chef windows bootstrap</code> doesnt have an install as service option. Dang it; that would be too convenient. Even the official docs dont say anything about it..</p>
+<p><a href="https://docs.chef.io/plugin_knife_windows.html">Here</a> is the official documentation.</p>
+<h2 id="quick-snippet">Quick snippet:</h2>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">-G GATEWAY, --ssh-gateway GATEWAY
+    The SSH tunnel or gateway that is used to run a bootstrap action on a machine that is not accessible from the workstation.
+-i IDENTITY_FILE, --identity-file IDENTITY_FILE
+    The SSH identity file used for authentication. Key-based authentication is recommended.
+-j JSON_ATTRIBS, --json-attributes JSON_ATTRIBS
+    A JSON string that is added to the first run of a chef-client.
+-N NAME, --node-name NAME
+    The name of the node.
+--[no-]host-key-verify
+    Use --no-host-key-verify to disable host key verification. Default setting: --host-key-verify.
+</code></pre></div><p>Right. Ok.</p>
+<p>That said; <a href="https://github.com/chef/knife-windows/pull/215">here&rsquo;s a <em>very interesting</em></a> github pull request:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">             <span style="color:#2aa198">:description</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;Bootstrap a distro using a template&#34;</span>,
+              <span style="color:#2aa198">:default</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;windows-chef-client-msi&#34;</span>
+  
+ <span style="color:#719e07">+</span>          option <span style="color:#2aa198">:install_as_service</span>,
+ <span style="color:#719e07">+</span>            <span style="color:#2aa198">:long</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;--install-as-service&#34;</span>,
+ <span style="color:#719e07">+</span>            <span style="color:#2aa198">:description</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;Install chef-client as service in windows machine&#34;</span>,
+ <span style="color:#719e07">+</span>            <span style="color:#2aa198">:default</span> <span style="color:#719e07">=&gt;</span> <span style="color:#719e07">false</span>
+ <span style="color:#719e07">+</span>
+            option <span style="color:#2aa198">:template_file</span>,
+              <span style="color:#2aa198">:long</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;--template-file TEMPLATE&#34;</span>,
+              <span style="color:#2aa198">:description</span> <span style="color:#719e07">=&gt;</span> <span style="color:#2aa198">&#34;Full path to location of template to use&#34;</span>,
+</code></pre></div><p>and</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">         <span style="color:#719e07">private</span>
+  
+          <span style="color:#719e07">def</span> <span style="color:#268bd2">install_command</span>(executor_quote)
+ <span style="color:#719e07">-</span>          <span style="color:#2aa198">&#34;msiexec /qn /log </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%CHEF_CLIENT_MSI_LOG_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198"> /i </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%LOCAL_DESTINATION_MSI_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+ <span style="color:#719e07">+</span>          <span style="color:#719e07">if</span> @config<span style="color:#719e07">[</span><span style="color:#2aa198">:install_as_service</span><span style="color:#719e07">]</span> <span style="color:#719e07">||</span> @knife_config<span style="color:#719e07">[</span><span style="color:#2aa198">:install_as_service</span><span style="color:#719e07">]</span>
+ <span style="color:#719e07">+</span>            <span style="color:#2aa198">&#34;msiexec /qn /log </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%CHEF_CLIENT_MSI_LOG_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198"> /i </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%LOCAL_DESTINATION_MSI_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198"> ADDLOCAL=</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">ChefClientFeature,ChefServiceFeature</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+ <span style="color:#719e07">+</span>          <span style="color:#719e07">else</span>              
+ <span style="color:#719e07">+</span>            <span style="color:#2aa198">&#34;msiexec /qn /log </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%CHEF_CLIENT_MSI_LOG_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198"> /i </span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">%LOCAL_DESTINATION_MSI_PATH%</span><span style="color:#2aa198">#{</span>executor_quote<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+ <span style="color:#719e07">+</span>          <span style="color:#719e07">end</span>
+          <span style="color:#719e07">end</span>
+  
+          <span style="color:#586e75"># Returns a string for copying the trusted certificates on the workstation to the system being bootstrapped</span>
+
+</code></pre></div><p><em>hmmmmmmm</em></p>
+<p>Let&rsquo;s see if it works.</p>
+<p><code>&gt; knife bootstrap windows winrm sts601-dsc  -r 'baselineRecipe' -x 'DOAMIN\USER' -P NO_PASSWORD_HERE --install-as-service</code></p>
+<p>IT DOES!</p>
+<p>Huzzah!</p>
+<p><em>Edit:</em> Submitted a <a href="https://github.com/chef/chef-web-docs/pull/438">pull request</a> to update the Chef documentation</p>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/windows">windows</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

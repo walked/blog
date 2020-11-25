@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cli on i-py.com</title>
+    <link>https://i-py.com/tags/cli/</link>
+    <description>Recent content in cli on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Wed, 18 Jan 2017 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/cli/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cmder changing the lambda - update!</title>
+      <link>https://i-py.com/posts/2017-01-18-cmder-lambda-update/</link>
+      <pubDate>Wed, 18 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-18-cmder-lambda-update/</guid>
+      <description>&lt;p&gt;So previously discussed cmder before: [Cmder - Changing the Lambda]({{ site.baseurl }}{% post_url 2016-05-04-cmder-lambda %})&lt;/p&gt;
+&lt;p&gt;However, with the newest releace of Cmder there were some file structure changes that were made that need to be updated for fixing the lambda.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cmder Lambda</title>
+      <link>https://i-py.com/posts/2016-05-04-cmder-lambda/</link>
+      <pubDate>Wed, 04 May 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-05-04-cmder-lambda/</guid>
+      <description>&lt;p&gt;So I have to say, I&amp;rsquo;m just enamored with &lt;a href=&#34;http://cmder.net/&#34;&gt;Cmder&lt;/a&gt; It&amp;rsquo;s phenomenal. Elegant, clean, and just truly the best console application I&amp;rsquo;ve used. Throw it in a dropbox and you&amp;rsquo;re _set. _SSH, git, grep&amp;hellip; all my *nix aliases in one portable package? Sure thing - I&amp;rsquo;m sold. And it&amp;rsquo;s pretty. Let&amp;rsquo;s customize it a teeny, tiny bit. I wont re-write the featureset, so:&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

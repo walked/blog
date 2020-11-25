@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Server 2016 - Docker Abstraction API with Flask - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Server 2016 - Docker Abstraction API with Flask" />
+<meta property="og:description" content="So; lets talk about a docker host on Windows Server 2016, and building an abstraction API with Python/Flask. This will be a multi-part post as my time permits." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2016-11-13-docker-abstraction-api/" />
+<meta property="article:published_time" content="2016-11-13T12:32:30-05:00" />
+<meta property="article:modified_time" content="2016-11-13T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Server 2016 - Docker Abstraction API with Flask"/>
+<meta name="twitter:description" content="So; lets talk about a docker host on Windows Server 2016, and building an abstraction API with Python/Flask. This will be a multi-part post as my time permits."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Server 2016 - Docker Abstraction API with Flask</h1>
+			<div class="meta">Posted on &mdash; Nov 13, 2016</div>
+		</div>
+
+		<div class="markdown">
+			<p>So; lets talk about a docker host on Windows Server 2016, and building an abstraction API with Python/Flask. This will be a multi-part post as my time permits.</p>
+<p>The basic scenario is that a team may have a need to share a docker server, with standardized docker images, but with needs not addressed directly by the docker daemon API.</p>
+<p>First up; in a previous post I addressed setting up Windows Server 2016 to listen to docker requests externally.  <em>(note: I know this is a post about introspection, but this will also cover you for allowing access on external interfaces)</em>   !</p>
+<p>So, first off, why? Many reasons at hand:</p>
+<ul>
+<li>To play &ldquo;traffic cop&rdquo; - in this case we have multiple users that need to instantiate environments (containers) but without being able to run into infinity (on purpose or by accident)</li>
+<li>It can perform authentication against whatever authentication provider we want to use; so long as Flask supports it (or you can build it in!)</li>
+<li>We can do additional metrics and environment management outside of what the docker API can to (e.g. simple orchestration simplification)</li>
+<li>Simplification for our team; no need to get nitty gritty</li>
+</ul>
+<p>Additional factors:</p>
+<ul>
+<li>We are in an environment which dictates no local admin rights for our users; non-negotiable (and this is needed for docker!)</li>
+<li>Even if we could, we&rsquo;re still standardized on Windows 8.1</li>
+<li>We want to ensure zero exposure to the baseline docker images; e.g. a single source of environment truth</li>
+</ul>
+<p>Needless to say, your reasons may not mirror these. And that&rsquo;s okay. This may be an entirely irrevelvant configuration in your world, but - for me - this is useful. Let&rsquo;s look at a little chunk of a proof of concept having python/Flask calling the docker daemon API First up, define the baseline necessary json data structure for a container and some data for the docker host:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#719e07">from</span> flask <span style="color:#719e07">import</span> Flask
+<span style="color:#719e07">import</span> requests
+<span style="color:#719e07">import</span> json
+
+server <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;DOCKER_HOST_IP_ADDRESS&#34;</span>
+port <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;2375&#34;</span>
+
+containerTemplate <span style="color:#719e07">=</span> {
+    <span style="color:#2aa198">&#34;Image&#34;</span>: <span style="color:#2aa198">&#39;ipy/iis&#39;</span>,
+    <span style="color:#2aa198">&#34;ExposedPorts&#34;</span>:
+        {<span style="color:#2aa198">&#34;80/tcp&#34;</span>: <span style="color:#268bd2">None</span>},
+    <span style="color:#2aa198">&#34;HostConfig&#34;</span>:
+        {<span style="color:#2aa198">&#34;PublishAllPorts&#34;</span>: <span style="color:#268bd2">True</span>},
+    <span style="color:#2aa198">&#34;Cmd&#34;</span>: [],
+    <span style="color:#2aa198">&#34;Env&#34;</span>: []
+}
+</code></pre></div><p>Pretty simple to start with. IF you need documentation on a docker container creation and the possible values in the API, here you go: <a href="https://docs.docker.com/engine/reference/api/docker_remote_api_v1.24/#/create-a-container">API Docs</a> Right now, we&rsquo;re not defining much at all. Let&rsquo;s make a few notes though:</p>
+<ul>
+<li><code>&quot;Image&quot;: 'ipy/iis'</code>  - this is probably going to be an image you have created yourself; (perhaps I&rsquo;ll do a writeup on setting up an IIS docker container that pulls the live code on run, rather than build a little later!)</li>
+<li><code>&quot;ExposedPorts&quot;</code> - this is just one (of a number of) ways to setup exposed ports; in our scenario we&rsquo;re going to dynamically assign external ports and we&rsquo;ll hve our API get that back to the caller.</li>
+<li><code>&quot;Env&quot;: []</code>  - gives us an ability to setup environment variables. This is handy as we can now use the API to perform specific actions in the container on run; based on Environment Vaariables.</li>
+</ul>
+<p>Next up; I feel it worth mentioning that when in a docker commandline and you run a &ldquo;docker run img/imagename&rdquo; its actually calling a create action on the API, followed by a run action. This needs to be done distinctly when using the API. Alrighty, now let&rsquo;s look at a few Flask routes that gets some stuff done.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#268bd2">@app.route</span>(<span style="color:#2aa198">&#39;/create&#39;</span>, methods<span style="color:#719e07">=</span>[<span style="color:#2aa198">&#39;POST&#39;</span>])
+<span style="color:#719e07">def</span> <span style="color:#268bd2">create</span>():
+    containerRequest <span style="color:#719e07">=</span> requests<span style="color:#719e07">.</span>post((<span style="color:#2aa198">&#34;http://{0}:{1}/containers/create&#34;</span><span style="color:#719e07">.</span>format(server, port)), json<span style="color:#719e07">=</span>containerTemplate)
+    data <span style="color:#719e07">=</span> json<span style="color:#719e07">.</span>loads(containerRequest<span style="color:#719e07">.</span>text)
+    <span style="color:#719e07">return</span> data[<span style="color:#2aa198">&#39;Id&#39;</span>]
+
+<span style="color:#268bd2">@app.route</span>(<span style="color:#2aa198">&#39;/createForTeam/&lt;team&gt;&#39;</span>, methods<span style="color:#719e07">=</span>[<span style="color:#2aa198">&#39;POST&#39;</span>])
+<span style="color:#719e07">def</span> <span style="color:#268bd2">createForTeam</span>(team):
+    <span style="color:#586e75">#containerTest[&#34;Cmd&#34;].append(&#34;powershell C:/scripts/pullWebSite.ps1 -Team {0}&#34;.format(team))</span>
+    containerTest[<span style="color:#2aa198">&#34;Env&#34;</span>]<span style="color:#719e07">.</span>append(<span style="color:#2aa198">&#34;mobTeam={0}&#34;</span><span style="color:#719e07">.</span>format(team))
+    containerRequest <span style="color:#719e07">=</span> requests<span style="color:#719e07">.</span>post((<span style="color:#2aa198">&#34;http://{0}:{1}/containers/create&#34;</span><span style="color:#719e07">.</span>format(server, port)), json<span style="color:#719e07">=</span>containerTest)
+    data <span style="color:#719e07">=</span> json<span style="color:#719e07">.</span>loads(containerRequest<span style="color:#719e07">.</span>text)
+    <span style="color:#719e07">return</span> data[<span style="color:#2aa198">&#39;Id&#39;</span>]
+
+<span style="color:#268bd2">@app.route</span>(<span style="color:#2aa198">&#39;/run/&lt;containerId&gt;&#39;</span>, methods<span style="color:#719e07">=</span>[<span style="color:#2aa198">&#39;POST&#39;</span>])
+<span style="color:#719e07">def</span> <span style="color:#268bd2">run</span>(containerId):
+    runningContainer <span style="color:#719e07">=</span> requests<span style="color:#719e07">.</span>post(<span style="color:#2aa198">&#34;http://{0}:{1}/containers/{2}/start&#34;</span><span style="color:#719e07">.</span>format(server, port, containerId))
+    <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;Running&#34;</span>
+
+<span style="color:#268bd2">@app.route</span>(<span style="color:#2aa198">&#39;/ports/&lt;containerId&gt;&#39;</span>)
+<span style="color:#719e07">def</span> <span style="color:#268bd2">ports</span>(containerId):
+    info <span style="color:#719e07">=</span> requests<span style="color:#719e07">.</span>get(<span style="color:#2aa198">&#34;http://{0}:{1}/containers/{2}/json&#34;</span><span style="color:#719e07">.</span>format(server, port, containerId))
+    containerInfo <span style="color:#719e07">=</span> json<span style="color:#719e07">.</span>loads(info<span style="color:#719e07">.</span>text)
+    cnPort <span style="color:#719e07">=</span> containerInfo[<span style="color:#2aa198">&#34;NetworkSettings&#34;</span>][<span style="color:#2aa198">&#34;Ports&#34;</span>][<span style="color:#2aa198">&#34;80/tcp&#34;</span>][<span style="color:#2aa198">0</span>][<span style="color:#2aa198">&#34;HostPort&#34;</span>]
+    <span style="color:#719e07">return</span> <span style="color:#2aa198">&#34;{0}&#34;</span><span style="color:#719e07">.</span>format(cnPort)
+</code></pre></div><p>And now; let&rsquo;s look at how we&rsquo;d call this from PowerShell.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#268bd2">$containerId</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method Post -uri http://FLASK_APP_IP:5000/create
+<span style="color:#268bd2">$state</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method post -uri http://FLASK_APP_IP:5000/run/$(<span style="color:#268bd2">$containerId</span>)
+<span style="color:#268bd2">$ports</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method get -Uri http://FLASK_APP_IP:5000/ports/$(<span style="color:#268bd2">$containerId</span>)
+
+<span style="color:#586e75">#or</span>
+
+<span style="color:#268bd2">$containerId</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method Post -uri http://FLASK_APP_IP:5000/createForTeam/teamNameVariable
+<span style="color:#268bd2">$state</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method post -uri http://FLASK_APP_IP:5000/run/$(<span style="color:#268bd2">$containerId</span>)
+<span style="color:#268bd2">$ports</span> = <span style="color:#b58900">Invoke-RestMethod</span> -method get -Uri http://FLASK_APP_IP:5000/ports/$(<span style="color:#268bd2">$containerId</span>)
+
+<span style="color:#586e75">#Oh, and just a simple quick way to hit the webpage:</span>
+<span style="color:#b58900">Start-Process</span> <span style="color:#2aa198">&#34;chrome.exe&#34;</span> <span style="color:#2aa198">&#34;DOCKER_HOST_IP_ADDR:</span>$(<span style="color:#268bd2">$ports</span>)<span style="color:#2aa198">&#34;</span>
+</code></pre></div><p>The second call, will hit the createForTeam route, which will take a value and insert an environment variable in the newly created container (which again, we can have the baseline container perform unique actions based on this value on run, rather than build!) All said, this is just an opening into really giving yourself a simplified, but supercharged API for docker management. We&rsquo;ll take this a step further in the next blog post.</p>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/docker">docker</a></li>
+								
+								<li><a href="/tags/python">python</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

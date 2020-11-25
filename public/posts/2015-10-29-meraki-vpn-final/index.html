@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Meraki VPN Deployment Part Final - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Meraki VPN Deployment Part Final" />
+<meta property="og:description" content="So here we go. A finalized script that will create the VPN profile, as necessary, for Meraki VPN deployment. This should enable complete deployment of a Meraki VPN profile to clients, using just PowerShell 4.0 and enable split tunneling." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2015-10-29-meraki-vpn-final/" />
+<meta property="article:published_time" content="2015-10-29T12:32:30-05:00" />
+<meta property="article:modified_time" content="2015-10-29T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Meraki VPN Deployment Part Final"/>
+<meta name="twitter:description" content="So here we go. A finalized script that will create the VPN profile, as necessary, for Meraki VPN deployment. This should enable complete deployment of a Meraki VPN profile to clients, using just PowerShell 4.0 and enable split tunneling."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Meraki VPN Deployment Part Final</h1>
+			<div class="meta">Posted on &mdash; Oct 29, 2015</div>
+		</div>
+
+		<div class="markdown">
+			<p>So here we go. A finalized script that will create the VPN profile, as necessary, for Meraki VPN deployment. This should enable complete deployment of a Meraki VPN profile to clients, using <em>just PowerShell 4.0</em> and enable split tunneling.</p>
+<p><em>Without needing the VPN connection active</em> to set the aforementioned routes. Awesome. In our previous edition I rambled on about the <strong>Add-VpnConnectionRoute</strong> cmdlet here: <a href="http://i-py.com/meraki-vpn-profiles-part-2/">http://i-py.com/meraki-vpn-profiles-part-2/</a> I may still have some improvements to come, but hopefully it&rsquo;ll be of value to someone as-is. Github: <a href="https://github.com/walked/New-MerakiVPN">https://github.com/walked/New-MerakiVPN</a> Enjoy</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#268bd2">$xdoc</span> = <span style="color:#b58900">New-Object</span> System.Xml.XmlDocument
+<span style="color:#268bd2">$file</span> = <span style="color:#b58900">Resolve-Path</span>(<span style="color:#2aa198">&#34;$PSScriptRoot\connection.xml&#34;</span>)
+<span style="color:#268bd2">$xdoc</span>.Load(<span style="color:#268bd2">$file</span>)
+
+<span style="color:#268bd2">$vpnName</span> = <span style="color:#268bd2">$xdoc</span>.connection.vpn.name
+<span style="color:#268bd2">$vpnEndpoint</span> = <span style="color:#268bd2">$xdoc</span>.connection.vpn.endpoint
+<span style="color:#268bd2">$vpnPsk</span> = <span style="color:#268bd2">$xdoc</span>.connection.vpn.psk
+
+<span style="color:#cb4b16">[Boolean]</span><span style="color:#268bd2">$splitTunnel</span> = <span style="color:#cb4b16">[System.Convert]</span>::ToBoolean(<span style="color:#268bd2">$xdoc</span>.connection.vpn.tunnel)
+
+<span style="color:#719e07">function</span> Main
+{
+    <span style="color:#586e75">&lt;#
+</span><span style="color:#586e75">        </span><span style="color:#2aa198">.SYNOPSIS</span><span style="color:#586e75">
+</span><span style="color:#586e75">        Main function for MerakiVPN.ps1
+</span><span style="color:#586e75">        </span><span style="color:#2aa198">.DESCRIPTION</span><span style="color:#586e75">
+</span><span style="color:#586e75">        Due to the sequential loading of PowerShell this function encapsulates the main program logic and is called at the very end of the script file to kick it off.
+</span><span style="color:#586e75">    #&gt;</span>
+	<span style="color:#719e07">if</span> ((<span style="color:#b58900">Test-VpnNameAvailable</span> -nameToTest <span style="color:#268bd2">$vpnName</span>) <span style="color:#719e07">-eq</span> <span style="color:#268bd2">$true</span>)
+	{
+		<span style="color:#719e07">if</span> (<span style="color:#268bd2">$splitTunnel</span>)
+		{
+			<span style="color:#b58900">Add-VpnConnection</span> -L2tpPsk <span style="color:#268bd2">$vpnPsk</span> -name <span style="color:#268bd2">$vpnName</span> -ServerAddress <span style="color:#268bd2">$vpnEndpoint</span> -AllUserConnection -AuthenticationMethod Pap -TunnelType L2tp -SplitTunneling -Force
+
+			<span style="color:#719e07">foreach</span> (<span style="color:#268bd2">$sn</span> <span style="color:#719e07">in</span> <span style="color:#268bd2">$xdoc</span>.connection.subnets.ChildNodes)
+			{
+				<span style="color:#b58900">Add-VpnConnectionRoute</span> -AllUserConnection -ConnectionName <span style="color:#268bd2">$vpnName</span> -DestinationPrefix <span style="color:#268bd2">$sn</span>.network
+			}
+		}
+
+		<span style="color:#719e07">else</span>
+		{
+			<span style="color:#b58900">Add-VpnConnection</span> -L2tpPsk <span style="color:#268bd2">$vpnPsk</span> -name <span style="color:#268bd2">$vpnName</span> -ServerAddress <span style="color:#268bd2">$vpnEndpoint</span> -AllUserConnection -AuthenticationMethod Pap -TunnelType L2tp -Force
+		}
+
+	}
+}
+
+<span style="color:#719e07">function</span> <span style="color:#b58900">Test-VpnNameAvailable</span>
+{
+    <span style="color:#586e75">&lt;#
+</span><span style="color:#586e75">        </span><span style="color:#2aa198">.SYNOPSIS</span><span style="color:#586e75">
+</span><span style="color:#586e75">        Test-VpnNameAvailable will test if the proposed VPN Name is available for an adapter.
+</span><span style="color:#586e75">        </span><span style="color:#2aa198">.DESCRIPTION</span><span style="color:#586e75">
+</span><span style="color:#586e75">        The command Add-VppnConnection requires the -name specified to be not in use. This will test whether or not the VPN name is used by any other profile.
+</span><span style="color:#586e75">        </span><span style="color:#2aa198">.EXAMPLE</span><span style="color:#586e75">
+</span><span style="color:#586e75">        Test-VpnNameAvailable &#34;TestName&#34;
+</span><span style="color:#586e75">        Will return true if it&#39;s available, and false if not.
+</span><span style="color:#586e75">    #&gt;</span>
+	<span style="color:#719e07">param</span>
+	(
+		[<span style="color:#719e07">Parameter</span>(<span style="color:#719e07">Position</span> = 0, <span style="color:#719e07">mandatory</span> = <span style="color:#268bd2">$true</span>)]
+		<span style="color:#cb4b16">[String]</span><span style="color:#268bd2">$nameToTest</span>
+	)
+
+	<span style="color:#268bd2">$vpnTest</span> = <span style="color:#b58900">Get-VpnConnection</span> -AllUserConnection -Name <span style="color:#268bd2">$nameToTest</span> -ErrorAction SilentlyContinue
+	<span style="color:#719e07">if</span> (<span style="color:#268bd2">$vpnTest</span> <span style="color:#719e07">-ne</span> <span style="color:#268bd2">$null</span>)
+	{
+		<span style="color:#719e07">return</span> <span style="color:#268bd2">$false</span>
+	}
+	<span style="color:#719e07">else</span>
+	{
+		<span style="color:#719e07">return</span> <span style="color:#268bd2">$true</span>
+	}
+}
+
+Main
+</code></pre></div><p>Paired with the example xml config file:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#268bd2">&lt;connection&gt;</span>
+  <span style="color:#268bd2">&lt;vpn&gt;</span>
+    <span style="color:#268bd2">&lt;name&gt;</span>VPN Name<span style="color:#268bd2">&lt;/name&gt;</span>
+    <span style="color:#268bd2">&lt;psk&gt;</span>PRESHARED KEY<span style="color:#268bd2">&lt;/psk&gt;</span>
+    <span style="color:#268bd2">&lt;endpoint&gt;</span>IP or Hostname Endpoint<span style="color:#268bd2">&lt;/endpoint&gt;</span>
+    <span style="color:#268bd2">&lt;tunnel&gt;</span>true<span style="color:#268bd2">&lt;/tunnel&gt;</span>
+  <span style="color:#268bd2">&lt;/vpn&gt;</span>
+  <span style="color:#268bd2">&lt;subnets&gt;</span>
+    <span style="color:#268bd2">&lt;subnet&gt;</span>
+      <span style="color:#268bd2">&lt;network&gt;</span>192.168.88.0/24<span style="color:#268bd2">&lt;/network&gt;</span>
+    <span style="color:#268bd2">&lt;/subnet&gt;</span>
+    <span style="color:#268bd2">&lt;subnet&gt;</span>
+      <span style="color:#268bd2">&lt;network&gt;</span>192.168.99.0/24<span style="color:#268bd2">&lt;/network&gt;</span>
+     <span style="color:#268bd2">&lt;/subnet&gt;</span>
+  <span style="color:#268bd2">&lt;/subnets&gt;</span>
+<span style="color:#268bd2">&lt;/connection&gt;</span>
+</code></pre></div>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/networking">networking</a></li>
+								
+								<li><a href="/tags/vpn">vpn</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

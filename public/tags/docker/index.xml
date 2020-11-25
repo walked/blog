@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on i-py.com</title>
+    <link>https://i-py.com/tags/docker/</link>
+    <description>Recent content in docker on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Wed, 16 Nov 2016 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>cDscDocker 1.2.0 - Now With Daemon Support</title>
+      <link>https://i-py.com/posts/2016-11-16-cdscdocker-120-daemon/</link>
+      <pubDate>Wed, 16 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-16-cdscdocker-120-daemon/</guid>
+      <description>&lt;p&gt;Woohoo; now we&amp;rsquo;re cooking with fire. The cDscDocker resource has been updated to include giving the ability to expose the docker daemon on an interface address of your choice.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Server 2016 - Docker Abstraction API with Flask</title>
+      <link>https://i-py.com/posts/2016-11-13-docker-abstraction-api/</link>
+      <pubDate>Sun, 13 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-13-docker-abstraction-api/</guid>
+      <description>&lt;p&gt;So; lets talk about a docker host on Windows Server 2016, and building an abstraction API with Python/Flask. This will be a multi-part post as my time permits.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PowerShell DSC - cDscDocker - Version 1.1.0</title>
+      <link>https://i-py.com/posts/2016-11-2-cdscdocker110/</link>
+      <pubDate>Wed, 02 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-2-cdscdocker110/</guid>
+      <description>&lt;p&gt;Now with docker swarm support!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PowerShell DSC Module for Docker - Initial Stab</title>
+      <link>https://i-py.com/posts/2016-10-29-docker-dsc-module/</link>
+      <pubDate>Sat, 29 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-29-docker-dsc-module/</guid>
+      <description>&lt;p&gt;So, first and foremost - this is a first take. I already have plans to add docker swarm provisioning, better system checks (e.g. verification that appropriate system patches are in place) and an option to select docker version (or latest) to install.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker - Multiplatform Swarm and Bugs</title>
+      <link>https://i-py.com/posts/2016-10-21-docker-swarm-bugs/</link>
+      <pubDate>Fri, 21 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-21-docker-swarm-bugs/</guid>
+      <description>&lt;p&gt;Docker is so cool; and supporting Windows and Linux alike is even cooler. High availability is a thing though, so I was delighted to find out I can create a swarm in Linux; join Windows Server 2016, and have it managed. Awesome! But&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker on Windows 2016; Container Introspection via Docker Daemon / API</title>
+      <link>https://i-py.com/posts/2016-10-14-docker-introspection-api-windows/</link>
+      <pubDate>Fri, 14 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-14-docker-introspection-api-windows/</guid>
+      <description>&lt;p&gt;So with the RTM of Windows Server 2016, with it comes official support for docker; and with that - containers. Awesome. In this post, we&amp;rsquo;ll talk about container introspection, via the Docker Daemon / API. First and foremost, I&amp;rsquo;m not going to get into the nitty gritty of installing and configuring docker.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

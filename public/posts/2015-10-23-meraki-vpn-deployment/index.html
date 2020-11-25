@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Meraki VPN Deployment - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Meraki VPN Deployment" />
+<meta property="og:description" content="Grumble. We&rsquo;re in the process of replacing our infrastructure with Meraki products - in fact, we&rsquo;ve been extremely pleased with this so far. Except for that one thing. Deploying the Client VPN sucks." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2015-10-23-meraki-vpn-deployment/" />
+<meta property="article:published_time" content="2015-10-23T12:32:30-05:00" />
+<meta property="article:modified_time" content="2015-10-23T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Meraki VPN Deployment"/>
+<meta name="twitter:description" content="Grumble. We&rsquo;re in the process of replacing our infrastructure with Meraki products - in fact, we&rsquo;ve been extremely pleased with this so far. Except for that one thing. Deploying the Client VPN sucks."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Meraki VPN Deployment</h1>
+			<div class="meta">Posted on &mdash; Oct 23, 2015</div>
+		</div>
+
+		<div class="markdown">
+			<p>Grumble. We&rsquo;re in the process of replacing our infrastructure with Meraki products - in fact, we&rsquo;ve been <em>extremely</em> pleased with this so far. Except for that <strong>one thing</strong>. Deploying the Client VPN <em>sucks</em>.</p>
+<p>Yeah. It sucks. Let&rsquo;s talk about the requirements of the Meraki VPN, and some of the methods out there for deploying Windows native VPN profiles. First off, the Meraki documentation on Client VPN settings: <a href="https://docs.meraki.com/display/MX/Client+VPN+settings">https://docs.meraki.com/display/MX/Client+VPN+settings</a> Cool. What&rsquo;s worth noting:</p>
+<ul>
+<li>Type of VPN Must be L2TP</li>
+<li>Allow these protocols:
+<ul>
+<li>Unencrypted password (PAP)</li>
+</ul>
+</li>
+<li>Advanced Settings:
+<ul>
+<li>&ldquo;Use a preshared key for authentication&rdquo; is checked</li>
+<li>Preshared key is typed out</li>
+</ul>
+</li>
+</ul>
+<p>Pretty straightforward. Lets see about some deployment options now:</p>
+<p><strong>Failure 1: SCCM 2012 R2</strong> 
+SCCM cant do it; no way to set the Unecrypted PAP setting as far as I can tell, nor a Windows-native PSK.</p>
+<p><strong>Failure 2: GPO</strong> 
+GPO cant do it either; nowhere to set the PSK.</p>
+<p><strong>Failure 3: Copying the PBK file</strong> 
+As documented here: <a href="http://www.bauer-power.net/2011/09/how-to-back-up-restore-or-deploy.html">http://www.bauer-power.net/2011/09/how-to-back-up-restore-or-deploy.html</a> Yet another failure - for you see; it&rsquo;ll keep ALL the options in hand, but wont retain the pre-shared key.</p>
+<p><strong>Failure 4: Straight Powershell</strong> WMF 4.0 has the new Add-VpnConnection cmdlet. Awesome. Nope. Cant set the PSK. 
+<a href="http://i-py.com/wp-content/uploads/2015/10/banging-head-on-wall-1-reduced.jpg"><img src="http://i-py.com/wp-content/uploads/2015/10/banging-head-on-wall-1-reduced-300x225.jpg" alt="banging-head-on-wall-1-reduced"></a>  </p>
+<p>Ok. So what to do? Time to get creative. We have a deployment ahead of us, and our entire userbase depends on this VPN profile. Enter: The dotRas SDK: <a href="https://dotras.codeplex.com/">https://dotras.codeplex.com/</a> Awesome! I can just put together a quick exe and there we &hellip;What? No way to set the Unencrypted PAP setting required by Meraki. <img src="http://i-py.com/wp-content/uploads/2015/10/Dr.-Who.gif" alt=""> 
+Alright. Fine. Through some crafty work with dotRas, <em>and</em> Powershell invocation - we can do this!</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">                pb.Open();
+                <span style="color:#dc322f">string</span> vpnname = <span style="color:#2aa198">&#34;Name for VPN&#34;</span>;
+                <span style="color:#dc322f">string</span> pskey = <span style="color:#2aa198">&#34;PreShared Key&#34;</span>;
+                <span style="color:#dc322f">string</span> endpoint = <span style="color:#2aa198">&#34;Destination IP or Hostname&#34;</span>;
+
+                RasEntry vpnentry = RasEntry.CreateVpnEntry(vpnname, endpoint, RasVpnStrategy.L2tpOnly, RasDevice.Create(vpnname, RasDeviceType.Vpn));
+                vpnentry.Options.UsePreSharedKey = <span style="color:#719e07">true</span>;
+                vpnentry.EncryptionType = RasEncryptionType.Optional;
+                vpnentry.Options.RequirePap = <span style="color:#719e07">true</span>;
+                pb.Entries.Add(vpnentry);
+                vpnentry.UpdateCredentials(RasPreSharedKey.Client, pskey);
+
+                PowerShell ps = PowerShell.Create();
+                ps.AddScript(<span style="color:#2aa198">&#34;Set-VpnConnection -Name \&#34;&#34;</span> + vpnname + <span style="color:#2aa198">&#34;\&#34; -AllUserConnection -AuthenticationMethod Pap&#34;</span>);
+
+                ps.Invoke();
+</code></pre></div><p>So there you go. In the end, it&rsquo;s totally doable (even if it&rsquo;s not my favorite approach ever). This is just a snippet; and I&rsquo;ve put together a full mini-application-thing that reads the connection settings from an XML file and puts it into network connections. At some point in the coming day or two I&rsquo;ll get around to uploading it to github and post it here. Developers: Please note - I&rsquo;m not a developer. Ignore my iffy coding skills. Thank you! What&rsquo;s the downside? The PSK is stored in plain text. I&rsquo;m not a huge fan of that; and may get around to encrypting it and updating the GitHub project accordingly; however it&rsquo;s not exactly a top priority for my purposes. Until then, I&rsquo;ll be holding a slight grudge against Meraki.</p>
+<p>EDIT: Alright; up on GitHub. <strong><a href="https://github.com/walked/VpnProfile">https://github.com/walked/VpnProfile</a></strong></p>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/networking">networking</a></li>
+								
+								<li><a href="/tags/vpn">vpn</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

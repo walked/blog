@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Jenkins, Powershell DSC, and CI - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Jenkins, Powershell DSC, and CI" />
+<meta property="og:description" content="DSC is truly one of my favorite things to come out of the PowerShell team to date. The power for idempotent infrastructure and deployment is great. However, one relatively minor roadblock is getting an MOF delivery pipeline in place for getting the MOF configurations to a pull server." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2017-01-11-jenkins-dsc-ci/" />
+<meta property="article:published_time" content="2017-01-11T12:32:30-05:00" />
+<meta property="article:modified_time" content="2017-01-11T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jenkins, Powershell DSC, and CI"/>
+<meta name="twitter:description" content="DSC is truly one of my favorite things to come out of the PowerShell team to date. The power for idempotent infrastructure and deployment is great. However, one relatively minor roadblock is getting an MOF delivery pipeline in place for getting the MOF configurations to a pull server."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Jenkins, Powershell DSC, and CI</h1>
+			<div class="meta">Posted on &mdash; Jan 11, 2017</div>
+		</div>
+
+		<div class="markdown">
+			<p>DSC is truly one of my favorite things to come out of the PowerShell team to date. The power for idempotent infrastructure and deployment is great. However, one <em>relatively</em> minor roadblock is getting an MOF delivery pipeline in place for getting the MOF configurations to a pull server.</p>
+<p>I&rsquo;m fairly happy with a very basic Jenkins implementation to manage this. Certainly beats manually compiled mof files.</p>
+<p>Let&rsquo;s run through what this pipeline looks like:</p>
+<ol>
+<li>Git is utilized for a repository for all DSC configuration files; <strong>but not mof files</strong> (although I guess it&rsquo;s reasonable that this could include mof files as they are just text files; I&rsquo;m considering the mof a build artifact and thus not included in the git repo)</li>
+<li>Jenkins will maintain a sync with the git repository, triggering a build when a change is detected</li>
+<li>Jenkins will compile the mof files as a build action</li>
+<li>Optional: you can run / validate against pester tests; not covered in this post</li>
+<li>Jenkins will publish to an SMB share with the build artifacts, renamed for easy integration with DSC Configuration Names (<strong>note: we&rsquo;re using configuration names not configuration IDs!)</strong></li>
+<li>The DSC pull server can either be triggered to sync with the target directory, or simply have it&rsquo;s own sync mechanism. This isnt covered in this post as it&rsquo;s trivial to implement and highly dependent upon your environment.</li>
+</ol>
+<p><em>Sidenote: I may do a video on this environment configuration a bit later as this is something that strikes me as a &ldquo;better seen than read&rdquo;.</em></p>
+<p>So let&rsquo;s run through this at lightspeed 
+<img src="%7B%7Bsite.url%7D%7D/assets/images/misc/ftl.gif" alt="ftl">  </p>
+<h3 id="step-1-git-is-configured-as-a-repository-for-your-dsc-configuration-files">Step 1: Git is configured as a repository for your DSC configuration files</h3>
+<p>For this example, I&rsquo;m using a private GitLab repository, but you can use whatever you want. Inside the repository, I have a simple directory structure</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Root Directory
+└─ DSC
+    ├──── Configurations
+    ├──── Examples
+    └──── Scripts
+</code></pre></div><p>Inside the configurations directory, I have a bunch of configuration files, one example is (simplified) below:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Configuration webservice
+{
+    <span style="color:#719e07">param</span> (<span style="color:#268bd2">$MachineName</span>)
+        Node <span style="color:#268bd2">$MachineName</span>
+        {
+                <span style="color:#586e75">#Install IIS Role</span>
+                WindowsFeature IIS
+                {
+                    Ensure = <span style="color:#2aa198">&#34;Present&#34;</span>
+                    Name = <span style="color:#2aa198">&#34;Web-Server&#34;</span>
+                }
+                <span style="color:#586e75">#Install ASP.NET 4.5</span>
+                WindowsFeature ASP
+                {
+                    Ensure = <span style="color:#2aa198">&#34;Present&#34;</span>
+                    Name = <span style="color:#2aa198">&#34;web-Asp-Net45&#34;</span>
+                }
+        }
+}
+
+webservice -MachineName localhost
+</code></pre></div><p>Cool.</p>
+<h3 id="step-2-jenkins-is-configured-to-poll-that-git-repository-for-changes">Step 2: Jenkins is configured to poll that git repository for changes.</h3>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/dsc-jenkins/jenkins-1.jpg" alt="jenkins1"></p>
+<p>Pretty self explanatory.</p>
+<h3 id="step-3-jenkins-will-compile-the-mof-files-as-a-build-action">Step 3: Jenkins will compile the mof files as a build action</h3>
+<p><em>This requires the Jenkins PowerShell plugin to execute PowerShell.</em></p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#b58900">Set-location</span> <span style="color:#268bd2">$env:workspace</span>\DSC\Configurations
+<span style="color:#268bd2">$scripts</span> = <span style="color:#b58900">Get-ChildItem</span> <span style="color:#268bd2">$env:workspace</span>\DSC\Configurations -recurse -include <span style="color:#2aa198">&#34;*.ps1&#34;</span>
+
+<span style="color:#719e07">foreach</span>(<span style="color:#268bd2">$script</span> <span style="color:#719e07">in</span> <span style="color:#268bd2">$scripts</span>){
+ &amp; <span style="color:#268bd2">$script</span>
+}
+<span style="color:#268bd2">$mofFiles</span>= <span style="color:#b58900">Get-ChildItem</span> <span style="color:#268bd2">$env:workspace</span>\DSC\Configurations -recurse -include <span style="color:#2aa198">&#34;*.mof&#34;</span>
+<span style="color:#719e07">foreach</span>(<span style="color:#268bd2">$mof</span> <span style="color:#719e07">in</span> <span style="color:#268bd2">$mofFiles</span>){
+    <span style="color:#b58900">Rename-Item</span> <span style="color:#268bd2">$mof</span> <span style="color:#2aa198">&#34;</span>$(<span style="color:#268bd2">$mof</span>.directory.Name)<span style="color:#2aa198">.mof&#34;</span>
+    <span style="color:#b58900">New-DscChecksum</span> <span style="color:#2aa198">&#34;</span>$(<span style="color:#268bd2">$mof</span>.DirectoryName)<span style="color:#2aa198">\</span>$(<span style="color:#268bd2">$mof</span>.Directory.Name)<span style="color:#2aa198">.mof&#34;</span>
+}
+</code></pre></div><p>So what does this do?</p>
+<p>Mainly two things:</p>
+<ol>
+<li>It executes every ps1 file in the Configurations directory (based on the directory structure referenced above)</li>
+<li>It renames all the compiled mof to be the same as directoryname.mof - as we&rsquo;re using named configurations in deployment, we want to name these with the configuration name we&rsquo;ll be referencing on the clients. 2.5) Also generating the DdsChecksum here, why not get that done?</li>
+</ol>
+<h3 id="step-5-publication-to-an-smb-share-from-jenkins">Step 5: Publication to an SMB Share from Jenkins</h3>
+<p><em>Yes I know I skipped 4; that&rsquo;s because I left out pester tests for this particular blog post.</em> This, once again, is pretty simple.</p>
+<p>Simply use the CIFS Jenkins plugin.</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/dsc-jenkins/jenkins-2.jpg" alt="jenkins2">  </p>
+<h3 id="step-6-sync-your-dsc-pull-server-configuration-directory-with-the-smb-share">Step 6: Sync your DSC pull server Configuration directory with the SMB Share</h3>
+<p>** This is really the simplest step. Just use your imagination.</p>
+<p><img src="%7B%7Bsite.url%7D%7D/assets/images/misc/imagination.gif" alt="imagination">  </p>
+<p>Really, the trickiest part is the PowerShell script for Jenkins to build/process the mof files. But the value in having CI setup for your DSC configurations is super duper awesome. No more manual copying.</p>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/windows">windows</a></li>
+								
+								<li><a href="/tags/powershell">powershell</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

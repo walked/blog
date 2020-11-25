@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Azure RM - JsonADDomainExtension - Error 1332 - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Azure RM - JsonADDomainExtension - Error 1332" />
+<meta property="og:description" content="I&rsquo;ve been working with Azure RM Templating quite a lot lately. It&rsquo;s actually pretty staggering in how versatile it is, but some of the documentation is a bit less than awesome." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2016-12-23-azure-joindomain/" />
+<meta property="article:published_time" content="2016-12-23T12:32:30-05:00" />
+<meta property="article:modified_time" content="2016-12-23T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Azure RM - JsonADDomainExtension - Error 1332"/>
+<meta name="twitter:description" content="I&rsquo;ve been working with Azure RM Templating quite a lot lately. It&rsquo;s actually pretty staggering in how versatile it is, but some of the documentation is a bit less than awesome."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">Azure RM - JsonADDomainExtension - Error 1332</h1>
+			<div class="meta">Posted on &mdash; Dec 23, 2016</div>
+		</div>
+
+		<div class="markdown">
+			<p>I&rsquo;ve been working with Azure RM Templating quite a lot lately. It&rsquo;s actually pretty staggering in how versatile it is, but some of the documentation is a bit less than awesome.</p>
+<p>First off, probably the best &ldquo;documentation&rdquo; resource I&rsquo;ve found is the <a href="https://github.com/Azure/azure-quickstart-templates">Azure Quickstart Template repo.</a> It&rsquo;s not formal documentation, but it&rsquo;s well organized and covers a whole lot of realistic scenarios. That said, the Domain Extension has a minor quirk that&rsquo;s worth noting; in my experience - it&rsquo;s identified by:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#268bd2">&#34;code&#34;</span>: <span style="color:#2aa198">&#34;ComponentStatus/JoinDomainException for Option 3 meaning &#39;User Specified&#39;/failed/1&#34;</span>,
+    <span style="color:#268bd2">&#34;displayStatus&#34;</span>: <span style="color:#2aa198">&#34;Provisioning failed&#34;</span>,
+    <span style="color:#268bd2">&#34;level&#34;</span>: <span style="color:#2aa198">&#34;Error&#34;</span>,
+    <span style="color:#268bd2">&#34;message&#34;</span>: <span style="color:#2aa198">&#34;ERROR - Failed to join domain=&#39;MyAd.MyDomain&#39;, ou=&#39;CN=Computers,DC=MyAd,DC=MyDomain&#39;, user=&#39;USERNAME&#39;, option=&#39;NetSetupJoinDomain, NetSetupAcctCreate&#39; (#3 meaning &#39;User Specified&#39;). Error code 2&#34;</span>,
+    <span style="color:#268bd2">&#34;time&#34;</span>: <span style="color:#cb4b16">null</span>
+}
+
+{
+    <span style="color:#268bd2">&#34;code&#34;</span>: <span style="color:#2aa198">&#34;ComponentStatus/JoinDomainException for Option 1 meaning &#39;User Specified without NetSetupAcctCreate&#39;/failed/1&#34;</span>,
+    <span style="color:#268bd2">&#34;displayStatus&#34;</span>: <span style="color:#2aa198">&#34;Provisioning failed&#34;</span>,
+    <span style="color:#268bd2">&#34;level&#34;</span>: <span style="color:#2aa198">&#34;Error&#34;</span>,
+    <span style="color:#268bd2">&#34;message&#34;</span>: <span style="color:#2aa198">&#34;ERROR - Failed to join domain=&#39;MyAd.MyDomain&#39;, ou=&#39;CN=Computers,DC=MyAd,DC=MyDomain&#39;, user=&#39;USERNAME&#39;, option=&#39;NetSetupJoinDomain&#39; (#1 meaning &#39;User Specified without NetSetupAcctCreate&#39;). Error code 1332&#34;</span>,
+    <span style="color:#268bd2">&#34;time&#34;</span>: <span style="color:#cb4b16">null</span>
+}
+</code></pre></div><p><em>The telling items being error 2 followed by 1332.</em></p>
+<p>There&rsquo;s not much documentation in the way of this one out there. One other worthy note; the logs for the AD Join Domain extension can be found on the provisioned VM in the following directory: <code>C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.JsonADDomainExtension\1.3\ADDomainExtension.txt</code></p>
+<p>As it turns out, this is as simple as this Azure Extension cannot join computers to the built-in Computers container within AD. It must be specified to join and place them in a separate OU path. Perhaps the fact that the parameter is &ldquo;<strong>OU</strong>path&rdquo; in the extension should have given it away; but nonetheless - you cannot join to <code>CN=Computers,DC=MyAd,DC=MyDomain</code> (Normally I&rsquo;d have a staging OU configured, but I was testing this is a hastily deployed AD testing environment with a minimum of configuration. Once the Staging OU is provisioned and operational, all of this worked perfectly). The extension code for an RM template is as follows:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+      <span style="color:#268bd2">&#34;apiVersion&#34;</span>: <span style="color:#2aa198">&#34;2015-06-15&#34;</span>,
+      <span style="color:#268bd2">&#34;type&#34;</span>: <span style="color:#2aa198">&#34;Microsoft.Compute/virtualMachines/extensions&#34;</span>,
+      <span style="color:#268bd2">&#34;name&#34;</span>: <span style="color:#2aa198">&#34;[concat(parameters(&#39;virtualMachineName&#39;),&#39;/joindomain&#39;)]&#34;</span>,
+      <span style="color:#268bd2">&#34;location&#34;</span>: <span style="color:#2aa198">&#34;[resourceGroup().location]&#34;</span>,
+      <span style="color:#268bd2">&#34;dependsOn&#34;</span>: [
+        <span style="color:#2aa198">&#34;[concat(&#39;Microsoft.Compute/virtualMachines/&#39;, parameters(&#39;virtualMachineName&#39;))]&#34;</span>
+      ],
+      <span style="color:#268bd2">&#34;properties&#34;</span>: {
+        <span style="color:#268bd2">&#34;publisher&#34;</span>: <span style="color:#2aa198">&#34;Microsoft.Compute&#34;</span>,
+        <span style="color:#268bd2">&#34;type&#34;</span>: <span style="color:#2aa198">&#34;JsonADDomainExtension&#34;</span>,
+        <span style="color:#268bd2">&#34;typeHandlerVersion&#34;</span>: <span style="color:#2aa198">&#34;1.3&#34;</span>,
+        <span style="color:#268bd2">&#34;autoUpgradeMinorVersion&#34;</span>: <span style="color:#cb4b16">true</span>,
+        <span style="color:#268bd2">&#34;settings&#34;</span>: {
+          <span style="color:#268bd2">&#34;Name&#34;</span>: <span style="color:#2aa198">&#34;[parameters(&#39;domainName&#39;)]&#34;</span>,
+          <span style="color:#268bd2">&#34;User&#34;</span>: <span style="color:#2aa198">&#34;[parameters(&#39;userName&#39;)]&#34;</span>,
+          <span style="color:#268bd2">&#34;Restart&#34;</span>: <span style="color:#2aa198">&#34;true&#34;</span>,
+          <span style="color:#268bd2">&#34;Options&#34;</span>: <span style="color:#2aa198">&#34;3&#34;</span>,
+          <span style="color:#268bd2">&#34;OUPath&#34;</span>: <span style="color:#2aa198">&#34;OU=Staging,DC=MyAd,DC=MyDomain&#34;</span>
+        },
+        <span style="color:#268bd2">&#34;protectedsettings&#34;</span>: {
+          <span style="color:#268bd2">&#34;Password&#34;</span>: <span style="color:#2aa198">&#34;[parameters(&#39;adminPassword&#39;)]&#34;</span>
+        }
+      }
+    }
+</code></pre></div>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/windows">windows</a></li>
+								
+								<li><a href="/tags/powershell">powershell</a></li>
+								
+								<li><a href="/tags/azure">azure</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on i-py.com</title>
+    <link>https://i-py.com/posts/</link>
+    <description>Recent content in Posts on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Thu, 02 Nov 2017 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Initial Release of Route53 DynamicDNS Client</title>
+      <link>https://i-py.com/posts/2017-11-03-route53-dynamic-dns/</link>
+      <pubDate>Thu, 02 Nov 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-11-03-route53-dynamic-dns/</guid>
+      <description>&lt;p&gt;There&amp;rsquo;s many Dynamic DNS clients; some support Route53. All of them seem to have a bunch of dependencies or be platform specific. Go is really good for this, so why not cook something up really quick?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Terraform - Psuedu Nested For-Loop and Usergen Release</title>
+      <link>https://i-py.com/posts/2017-11-02-terraform-usergen/</link>
+      <pubDate>Thu, 02 Nov 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-11-02-terraform-usergen/</guid>
+      <description>&lt;p&gt;So. I am using Terraform to generate a bunch of users and wanted to modularize it as much as possible. I wanted to get to a point where I could provide a set of &lt;code&gt;aws_iam_user&lt;/code&gt; objects and &lt;code&gt;aws_iam_user_policy_attachments&lt;/code&gt; and have the module cleanly handle this.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Chef - Bootstrapping Windows in Service Mode</title>
+      <link>https://i-py.com/posts/2017-02-01-chef-windows-bootstrap-service/</link>
+      <pubDate>Wed, 01 Feb 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-02-01-chef-windows-bootstrap-service/</guid>
+      <description>&lt;p&gt;So; &lt;code&gt;chef windows bootstrap&lt;/code&gt; doesnt have an install as service option. Dang it; that would be too convenient. Even the official docs dont say anything about it..&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ChefDK - Visual Studio Code Support</title>
+      <link>https://i-py.com/posts/2017-01-29-chef-vscode-tidbit/</link>
+      <pubDate>Sun, 29 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-29-chef-vscode-tidbit/</guid>
+      <description>&lt;p&gt;Super quick post, but one I wanted to throw down - here&amp;rsquo;s how to get Visual Studio Code working for the ChefDK in Windows; and I&amp;rsquo;ll also share my Visual Studio Code preferences file!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>WSL - Interop Tip</title>
+      <link>https://i-py.com/posts/2017-10-20-wsl-interop/</link>
+      <pubDate>Sun, 29 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-10-20-wsl-interop/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;NOTE 11/25/2020:&lt;/strong&gt; This post is very, very out of date. This is all WSL1. WSL completely revamps and fixes this approach and makes this entire post obsolute. Do not follow the directions below in 2020+&lt;/p&gt;
+&lt;p&gt;Quickest post yet; but maybe it will help someone! Because the WSL allows you to call Windows binaries from the Linux system, there&amp;rsquo;s a quick trick for paths that I&amp;rsquo;ve run into.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Chef - dsc_script vs dsc_resource</title>
+      <link>https://i-py.com/posts/2017-01-27-chef-powershell-dsc/</link>
+      <pubDate>Fri, 27 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-27-chef-powershell-dsc/</guid>
+      <description>&lt;p&gt;As I continue to experiment with my chef environment, I&amp;rsquo;ve run into an interesting limitation with the dsc_script resource.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Jekyll, Jenkins, and CI</title>
+      <link>https://i-py.com/posts/2017-01-22-ci-and-this-blog/</link>
+      <pubDate>Sun, 22 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-22-ci-and-this-blog/</guid>
+      <description>&lt;p&gt;Hey guys; as I mentioned - I wanted to come back to run through the workflow I have setup for this blog, CI, and source control!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cmder changing the lambda - update!</title>
+      <link>https://i-py.com/posts/2017-01-18-cmder-lambda-update/</link>
+      <pubDate>Wed, 18 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-18-cmder-lambda-update/</guid>
+      <description>&lt;p&gt;So previously discussed cmder before: [Cmder - Changing the Lambda]({{ site.baseurl }}{% post_url 2016-05-04-cmder-lambda %})&lt;/p&gt;
+&lt;p&gt;However, with the newest releace of Cmder there were some file structure changes that were made that need to be updated for fixing the lambda.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>This blog has been migrated to AWS</title>
+      <link>https://i-py.com/posts/2017-01-17-hosted-on-aws/</link>
+      <pubDate>Tue, 17 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-17-hosted-on-aws/</guid>
+      <description>&lt;p&gt;Over the holiday weekend I&amp;rsquo;ve made some major changes to this blog! &lt;em&gt;Retroactive apology to anyone who had bookmarked anything on this site!&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Jenkins, Powershell DSC, and CI</title>
+      <link>https://i-py.com/posts/2017-01-11-jenkins-dsc-ci/</link>
+      <pubDate>Wed, 11 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-11-jenkins-dsc-ci/</guid>
+      <description>&lt;p&gt;DSC is truly one of my favorite things to come out of the PowerShell team to date. The power for idempotent infrastructure and deployment is great. However, one &lt;em&gt;relatively&lt;/em&gt; minor roadblock is getting an MOF delivery pipeline in place for getting the MOF configurations to a pull server.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AzureRM - Bootstrapping DSC LCM</title>
+      <link>https://i-py.com/posts/2017-01-10-bootstrapping-dsc-azurerm/</link>
+      <pubDate>Tue, 10 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-10-bootstrapping-dsc-azurerm/</guid>
+      <description>&lt;p&gt;So, a brief tidbit if you&amp;rsquo;re not using Azure automation for your Azure VMs (we have a subset that are managed with a pull server that are not Azure automation controlled. So, at provisioning time we wanted to look at provisioning the VM with the LCM meta configuration, to avoid additional work by hand. It&amp;rsquo;s pretty simple, but required a different approach between WMF 4.0 and WMF 5.0 (read: Server 2012 and Server 2016). Let&amp;rsquo;s discuss:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Azure RM - CustomData Injection</title>
+      <link>https://i-py.com/posts/2016-12-29-azurerm-customdata/</link>
+      <pubDate>Thu, 29 Dec 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-12-29-azurerm-customdata/</guid>
+      <description>In building out some Azure templates recently - once again - documentation turned out to be a bit thin. The goal was to inject custom data into a VM with data from the output of a resource created in the same deployment</description>
+    </item>
+    
+    <item>
+      <title>Azure RM - JsonADDomainExtension - Error 1332</title>
+      <link>https://i-py.com/posts/2016-12-23-azure-joindomain/</link>
+      <pubDate>Fri, 23 Dec 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-12-23-azure-joindomain/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve been working with Azure RM Templating quite a lot lately. It&amp;rsquo;s actually pretty staggering in how versatile it is, but some of the documentation is a bit less than awesome.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>cDscDocker 1.2.0 - Now With Daemon Support</title>
+      <link>https://i-py.com/posts/2016-11-16-cdscdocker-120-daemon/</link>
+      <pubDate>Wed, 16 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-16-cdscdocker-120-daemon/</guid>
+      <description>&lt;p&gt;Woohoo; now we&amp;rsquo;re cooking with fire. The cDscDocker resource has been updated to include giving the ability to expose the docker daemon on an interface address of your choice.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Server 2016 - Docker Abstraction API with Flask</title>
+      <link>https://i-py.com/posts/2016-11-13-docker-abstraction-api/</link>
+      <pubDate>Sun, 13 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-13-docker-abstraction-api/</guid>
+      <description>&lt;p&gt;So; lets talk about a docker host on Windows Server 2016, and building an abstraction API with Python/Flask. This will be a multi-part post as my time permits.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PowerShell DSC - cDscDocker - Version 1.1.0</title>
+      <link>https://i-py.com/posts/2016-11-2-cdscdocker110/</link>
+      <pubDate>Wed, 02 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-2-cdscdocker110/</guid>
+      <description>&lt;p&gt;Now with docker swarm support!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SCCM Queries for Server 2016 and Windows 10</title>
+      <link>https://i-py.com/posts/2016-11-02-sccm-server-2016/</link>
+      <pubDate>Wed, 02 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-02-sccm-server-2016/</guid>
+      <description>&lt;p&gt;With the RTM of Server 2016 and beginning testing in my environment; we needed to update our SCCM device collections.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Some Chef, Some DSC - Website Deployment</title>
+      <link>https://i-py.com/posts/2016-11-08-some-chef-dsc/</link>
+      <pubDate>Wed, 02 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-08-some-chef-dsc/</guid>
+      <description>&lt;p&gt;If you know me, you know I like what DSC does. What recently came to my attention is that Chef can leverage DSC and that&amp;rsquo;s pretty cool.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PowerShell DSC Module for Docker - Initial Stab</title>
+      <link>https://i-py.com/posts/2016-10-29-docker-dsc-module/</link>
+      <pubDate>Sat, 29 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-29-docker-dsc-module/</guid>
+      <description>&lt;p&gt;So, first and foremost - this is a first take. I already have plans to add docker swarm provisioning, better system checks (e.g. verification that appropriate system patches are in place) and an option to select docker version (or latest) to install.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker - Multiplatform Swarm and Bugs</title>
+      <link>https://i-py.com/posts/2016-10-21-docker-swarm-bugs/</link>
+      <pubDate>Fri, 21 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-21-docker-swarm-bugs/</guid>
+      <description>&lt;p&gt;Docker is so cool; and supporting Windows and Linux alike is even cooler. High availability is a thing though, so I was delighted to find out I can create a swarm in Linux; join Windows Server 2016, and have it managed. Awesome! But&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker on Windows 2016; Container Introspection via Docker Daemon / API</title>
+      <link>https://i-py.com/posts/2016-10-14-docker-introspection-api-windows/</link>
+      <pubDate>Fri, 14 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-14-docker-introspection-api-windows/</guid>
+      <description>&lt;p&gt;So with the RTM of Windows Server 2016, with it comes official support for docker; and with that - containers. Awesome. In this post, we&amp;rsquo;ll talk about container introspection, via the Docker Daemon / API. First and foremost, I&amp;rsquo;m not going to get into the nitty gritty of installing and configuring docker.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Disabling Screen Blanking - Raspian Jesse</title>
+      <link>https://i-py.com/posts/2016-10-07-raspian-screen-blanking/</link>
+      <pubDate>Fri, 07 Oct 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-10-07-raspian-screen-blanking/</guid>
+      <description>&lt;p&gt;Another little tidbit I cam across in setting up a Raspia Raspberry Pi 3 (model b) for use in a kiosk setting (actually just an always on system monitor, but same idea). After X minutes, the screen blanking setting will come into play;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>DPM SQL Recovery Error 30111</title>
+      <link>https://i-py.com/posts/2016-05-17-sql-dpm-error-30111/</link>
+      <pubDate>Tue, 17 May 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-05-17-sql-dpm-error-30111/</guid>
+      <description>&lt;p&gt;Here&amp;rsquo;s one little trick that I recently came across when performing a DPM 2012 R2 redirected SQL recovery.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cmder Lambda</title>
+      <link>https://i-py.com/posts/2016-05-04-cmder-lambda/</link>
+      <pubDate>Wed, 04 May 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-05-04-cmder-lambda/</guid>
+      <description>&lt;p&gt;So I have to say, I&amp;rsquo;m just enamored with &lt;a href=&#34;http://cmder.net/&#34;&gt;Cmder&lt;/a&gt; It&amp;rsquo;s phenomenal. Elegant, clean, and just truly the best console application I&amp;rsquo;ve used. Throw it in a dropbox and you&amp;rsquo;re _set. _SSH, git, grep&amp;hellip; all my *nix aliases in one portable package? Sure thing - I&amp;rsquo;m sold. And it&amp;rsquo;s pretty. Let&amp;rsquo;s customize it a teeny, tiny bit. I wont re-write the featureset, so:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Meraki VPN Deployment Part Final</title>
+      <link>https://i-py.com/posts/2015-10-29-meraki-vpn-final/</link>
+      <pubDate>Thu, 29 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-29-meraki-vpn-final/</guid>
+      <description>&lt;p&gt;So here we go. A finalized script that will create the VPN profile, as necessary, for Meraki VPN deployment. This should enable complete deployment of a Meraki VPN profile to clients, using &lt;em&gt;just PowerShell 4.0&lt;/em&gt; and enable split tunneling.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Meraki VPN Deployment Part 2</title>
+      <link>https://i-py.com/posts/2015-10-28-meraki-part-2/</link>
+      <pubDate>Wed, 28 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-28-meraki-part-2/</guid>
+      <description>&lt;p&gt;Well, humble pie time. But this is good stuff here. Turns out I missed one little teeny tiny flag in the Add-VpnConnection cmdlet. Oops. But this is good!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Meraki VPN Deployment</title>
+      <link>https://i-py.com/posts/2015-10-23-meraki-vpn-deployment/</link>
+      <pubDate>Fri, 23 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-23-meraki-vpn-deployment/</guid>
+      <description>&lt;p&gt;Grumble. We&amp;rsquo;re in the process of replacing our infrastructure with Meraki products - in fact, we&amp;rsquo;ve been &lt;em&gt;extremely&lt;/em&gt; pleased with this so far. Except for that &lt;strong&gt;one thing&lt;/strong&gt;. Deploying the Client VPN &lt;em&gt;sucks&lt;/em&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Automating DPM Restores for SQL Server DB</title>
+      <link>https://i-py.com/posts/2015-10-02-automating-dpm-sql-restores/</link>
+      <pubDate>Fri, 02 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-02-automating-dpm-sql-restores/</guid>
+      <description>&lt;p&gt;Scenario: The development team needs periodic copies of all databases in a protection group distributed to a share across a site link.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Pushing Data to Dashing.io from PowerShell</title>
+      <link>https://i-py.com/posts/2015-09-04-pushing-data-dashing-io-powershell/</link>
+      <pubDate>Thu, 20 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-09-04-pushing-data-dashing-io-powershell/</guid>
+      <description>&lt;p&gt;Dashing.io; super cool, and pretty fly. Easy enough to configure a quick and small linux VM to host it. But how about pushing data to it, from Powershell? The key is Invoke-RestMethod- Let&amp;rsquo;s look at two of the simple built in widgets:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SCCM OSD Naming</title>
+      <link>https://i-py.com/posts/2015-08-20-sccm-osd-computer-naming/</link>
+      <pubDate>Thu, 20 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-20-sccm-osd-computer-naming/</guid>
+      <description>&lt;p&gt;So I&amp;rsquo;ve been working through the process of putting together a new Windows 8.1 image for OSD Deployment within our organization.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SCCM Queries for Server 2012 R2</title>
+      <link>https://i-py.com/posts/2015-08-17-sccm-server-2012/</link>
+      <pubDate>Mon, 17 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-17-sccm-server-2012/</guid>
+      <description>&lt;p&gt;With Server 2012 R2 out; I had to make a few updates to my SCCM Collections to take this into account. Quick and Dirty, for Server 2012 R2, WQL Statement:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Quick Tidbit: Download and Install MSI with PowerShell</title>
+      <link>https://i-py.com/posts/2015-08-09-quick-msi-download-and-install/</link>
+      <pubDate>Sun, 09 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-09-quick-msi-download-and-install/</guid>
+      <description>&lt;p&gt;This one comes via needing to deploy via GFI Remote Management and DropBox. This scenario was needed for a deployment of a VPN client in a GFI managed environment where there was no Active Directory present. Very simply put; PowerShell pulls from a public DropBox link, and silently installs.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Quick Tidbit: PowerShell Random Password Generator</title>
+      <link>https://i-py.com/posts/2015-08-07-quick-powershell-password-generator/</link>
+      <pubDate>Fri, 07 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-07-quick-powershell-password-generator/</guid>
+      <description>&lt;p&gt;I had a need for a quick and dirty password generator for an AD user creation script. There&amp;rsquo;s likely a better way to do this, but I wanted to have it fairly modular so it can be customized on the fly to meet organizational password requirements.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Connecting Ubiquiti EdgeRouter to AWS VPC</title>
+      <link>https://i-py.com/posts/2015-08-03-aws_edgerouter/</link>
+      <pubDate>Mon, 03 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-03-aws_edgerouter/</guid>
+      <description>I&amp;rsquo;m of the mind that many small businesses can benefit greatly from extending their IT systems into the cloud. AWS is price effective (especially on a 1 year reserved term), and offers built-in VPN connectivity options via their VPC.</description>
+    </item>
+    
+  </channel>
+</rss>

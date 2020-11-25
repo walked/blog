@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>cDscDocker 1.2.0 - Now With Daemon Support - i-py.com</title><link rel="icon" type="image/png" href=icons/myicon.png /><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="cDscDocker 1.2.0 - Now With Daemon Support" />
+<meta property="og:description" content="Woohoo; now we&rsquo;re cooking with fire. The cDscDocker resource has been updated to include giving the ability to expose the docker daemon on an interface address of your choice." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://i-py.com/posts/2016-11-16-cdscdocker-120-daemon/" />
+<meta property="article:published_time" content="2016-11-16T12:32:30-05:00" />
+<meta property="article:modified_time" content="2016-11-16T12:32:30-05:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="cDscDocker 1.2.0 - Now With Daemon Support"/>
+<meta name="twitter:description" content="Woohoo; now we&rsquo;re cooking with fire. The cDscDocker resource has been updated to include giving the ability to expose the docker daemon on an interface address of your choice."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://i-py.com/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="https://i-py.com/css/custom.css" />
+	
+
+	
+	<script src="https://i-py.com/js/main.js"></script>
+	<script src="https://i-py.com/js/abc.js"></script>
+	<script src="https://i-py.com/js/xyz.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div class="container wrapper post">
+		<div class="header">
+	<base href="https://i-py.com/">
+	<h1 class="site-title"><a href="https://i-py.com/">i-py.com</a></h1>
+	<div class="site-description"><h2>Technical Blog of Francis Setash</h2><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+			<li>
+				<a href="/tags">Tags</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post-header">
+			<h1 class="title">cDscDocker 1.2.0 - Now With Daemon Support</h1>
+			<div class="meta">Posted on &mdash; Nov 16, 2016</div>
+		</div>
+
+		<div class="markdown">
+			<p>Woohoo; now we&rsquo;re cooking with fire. The cDscDocker resource has been updated to include giving the ability to expose the docker daemon on an interface address of your choice.</p>
+<p><em>Sidebar: this was insanely frustrating as docker is picky about text encoding in daemon.json, and PowerShell Out-File does not support UTF8 encoding without BOM. Fun times trying to troubleshoot why docker suddenly wouldnt start.</em></p>
+<p>Either way, the links:</p>
+<p><a href="https://www.powershellgallery.com/packages/cDscDocker/1.2.0">PowerShell Gallery</a> 
+<a href="https://github.com/walked/cDscDocker">GitHub</a></p>
+<h3 id="a-few-notes-to-follow">A few notes to follow:</h3>
+<p>Known quirks:</p>
+<ul>
+<li>If you run this with docker installed, but a broken service it will fail on LCM test as it attempts to run commands against docker. I&rsquo;ll be doing some error handling for this later; but for now - if your docker service is errored out or unexpectedly stopped, you&rsquo;re probably in for a bad time.</li>
+<li>You need to suppoly a boolean value to the exposeApi property AND a daemonInterface value in the format of &ldquo;tcp://0.0.0.0:2375&rdquo;; I will probably make the exposeApi property mandatory on the next minor release.</li>
+</ul>
+<p>  Example:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Configuration dockerConfig
+{
+    <span style="color:#b58900">Import-DscResource</span> -module cDscDocker
+
+    Node localhost{
+
+    LocalConfigurationManager
+    {
+        RebootNodeIfNeeded = <span style="color:#268bd2">$true</span>
+    }
+        cDscDocker test
+        {
+            docker = <span style="color:#2aa198">&#34;docker&#34;</span> <span style="color:#586e75">#key; mandatory</span>
+            Ensure = <span style="color:#2aa198">&#39;Present&#39;</span> <span style="color:#586e75">#mandatory field (Available options: Present, Absent)</span>
+            swarm = <span style="color:#2aa198">&#39;Active&#39;</span> <span style="color:#586e75">#mandatory field (Available options: Active, Inactive)</span>
+            swarmToken = <span style="color:#2aa198">&#34;SWMTKN-1-guidguidguidguidguidguidguidguid&#34;</span> <span style="color:#586e75">#your swarm token here</span>
+            swarmURI = <span style="color:#2aa198">&#34;192.168.1.100:2377&#34;</span> <span style="color:#586e75">#IP address of manager node</span>
+            exposeApi = <span style="color:#268bd2">$true</span> <span style="color:#586e75">#this is a boolean value; not an enum like the the Ensure [&#34;Present&#34;,&#34;Absent&#34;] option above</span>
+            daemonInterface = <span style="color:#2aa198">&#39;tcp://0.0.0.0:2375&#39;</span> <span style="color:#586e75">#must be full URI format mimicing a daemon.json key-value</span>
+
+        }
+    }
+}
+
+dockerConfig
+</code></pre></div><p>Full source on <a href="https://github.com/walked/cDscDocker">GitHub</a>.  </p>
+<p>If you run into any quirks, bugs, or otherwise have a suggestion - reach out. The next release will likely be mostly refactoring a bit and improving error checking for oddities like errored docker service states.</p>
+		</div>
+
+		<div class="post-tags">
+			
+				
+					<nav class="nav tags">
+							<ul class="flat">
+								
+								<li><a href="/tags/powershell">powershell</a></li>
+								
+								<li><a href="/tags/docker">docker</a></li>
+								
+								<li><a href="/tags/windows">windows</a></li>
+								
+							</ul>
+					</nav>
+				
+			
+		</div>
+		</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div> All Content Copyright © - Francis Setash   </div>
+	</nav>
+</div>
+
+
+
+
+</body>
+</html>

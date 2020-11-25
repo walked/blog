@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sql on i-py.com</title>
+    <link>https://i-py.com/tags/sql/</link>
+    <description>Recent content in sql on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Tue, 17 May 2016 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/sql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DPM SQL Recovery Error 30111</title>
+      <link>https://i-py.com/posts/2016-05-17-sql-dpm-error-30111/</link>
+      <pubDate>Tue, 17 May 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-05-17-sql-dpm-error-30111/</guid>
+      <description>&lt;p&gt;Here&amp;rsquo;s one little trick that I recently came across when performing a DPM 2012 R2 redirected SQL recovery.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Automating DPM Restores for SQL Server DB</title>
+      <link>https://i-py.com/posts/2015-10-02-automating-dpm-sql-restores/</link>
+      <pubDate>Fri, 02 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-02-automating-dpm-sql-restores/</guid>
+      <description>&lt;p&gt;Scenario: The development team needs periodic copies of all databases in a protection group distributed to a share across a site link.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

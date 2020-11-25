@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>networking on i-py.com</title>
+    <link>https://i-py.com/tags/networking/</link>
+    <description>Recent content in networking on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Thu, 29 Oct 2015 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/networking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Meraki VPN Deployment Part Final</title>
+      <link>https://i-py.com/posts/2015-10-29-meraki-vpn-final/</link>
+      <pubDate>Thu, 29 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-29-meraki-vpn-final/</guid>
+      <description>&lt;p&gt;So here we go. A finalized script that will create the VPN profile, as necessary, for Meraki VPN deployment. This should enable complete deployment of a Meraki VPN profile to clients, using &lt;em&gt;just PowerShell 4.0&lt;/em&gt; and enable split tunneling.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Meraki VPN Deployment Part 2</title>
+      <link>https://i-py.com/posts/2015-10-28-meraki-part-2/</link>
+      <pubDate>Wed, 28 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-28-meraki-part-2/</guid>
+      <description>&lt;p&gt;Well, humble pie time. But this is good stuff here. Turns out I missed one little teeny tiny flag in the Add-VpnConnection cmdlet. Oops. But this is good!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Meraki VPN Deployment</title>
+      <link>https://i-py.com/posts/2015-10-23-meraki-vpn-deployment/</link>
+      <pubDate>Fri, 23 Oct 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-10-23-meraki-vpn-deployment/</guid>
+      <description>&lt;p&gt;Grumble. We&amp;rsquo;re in the process of replacing our infrastructure with Meraki products - in fact, we&amp;rsquo;ve been &lt;em&gt;extremely&lt;/em&gt; pleased with this so far. Except for that &lt;strong&gt;one thing&lt;/strong&gt;. Deploying the Client VPN &lt;em&gt;sucks&lt;/em&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Connecting Ubiquiti EdgeRouter to AWS VPC</title>
+      <link>https://i-py.com/posts/2015-08-03-aws_edgerouter/</link>
+      <pubDate>Mon, 03 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-03-aws_edgerouter/</guid>
+      <description>I&amp;rsquo;m of the mind that many small businesses can benefit greatly from extending their IT systems into the cloud. AWS is price effective (especially on a 1 year reserved term), and offers built-in VPN connectivity options via their VPC.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://i-py.com/"
 languageCode = "en-us"
 title = "i-py.com"
 theme = "ezhil"
@@ -64,10 +64,10 @@ name = "All posts"
 url = "/posts"
 weight = 2
 
-[[menu.main]]
-name = "About"
-url = "/about"
-weight = 3
+# [[menu.main]]
+# name = "About"
+# url = "/about"
+# weight = 3
 
 [[menu.main]]
 name = "Tags"
@@ -106,7 +106,7 @@ name = "s3deploy"
 
 # S3; see https://gocloud.dev/howto/blob/#s3
 # For S3-compatible endpoints, see https://gocloud.dev/howto/blob/#s3-compatible
-URL = "s3://staging.i-py.com>?region=us-east-1"
+URL = "s3://i-py.com?region=us-east-1"
 
 # Azure Blob Storage; see https://gocloud.dev/howto/blob/#azure
 # URL = "azblob://$web"
@@ -115,7 +115,7 @@ URL = "s3://staging.i-py.com>?region=us-east-1"
 # URL = "gs://<Bucket Name>?prefix=a/subfolder/"
 
 # If you are using a CloudFront CDN, deploy will invalidate the cache as needed.
-#cloudFrontDistributionID = "E7N7EFXUP6W7H"
+cloudFrontDistributionID = "E7N7EFXUP6W7H"
 
 # Optionally, you can include or exclude specific files.
 # See https://godoc.org/github.com/gobwas/glob#Glob for the glob pattern syntax.

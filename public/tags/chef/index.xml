@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>chef on i-py.com</title>
+    <link>https://i-py.com/tags/chef/</link>
+    <description>Recent content in chef on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Wed, 02 Nov 2016 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/chef/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Some Chef, Some DSC - Website Deployment</title>
+      <link>https://i-py.com/posts/2016-11-08-some-chef-dsc/</link>
+      <pubDate>Wed, 02 Nov 2016 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2016-11-08-some-chef-dsc/</guid>
+      <description>&lt;p&gt;If you know me, you know I like what DSC does. What recently came to my attention is that Chef can leverage DSC and that&amp;rsquo;s pretty cool.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

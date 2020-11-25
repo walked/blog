@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>aws on i-py.com</title>
+    <link>https://i-py.com/tags/aws/</link>
+    <description>Recent content in aws on i-py.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All Content Copyright © - Francis Setash</copyright>
+    <lastBuildDate>Thu, 02 Nov 2017 12:32:30 -0500</lastBuildDate>
+    
+	<atom:link href="https://i-py.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Initial Release of Route53 DynamicDNS Client</title>
+      <link>https://i-py.com/posts/2017-11-03-route53-dynamic-dns/</link>
+      <pubDate>Thu, 02 Nov 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-11-03-route53-dynamic-dns/</guid>
+      <description>&lt;p&gt;There&amp;rsquo;s many Dynamic DNS clients; some support Route53. All of them seem to have a bunch of dependencies or be platform specific. Go is really good for this, so why not cook something up really quick?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Terraform - Psuedu Nested For-Loop and Usergen Release</title>
+      <link>https://i-py.com/posts/2017-11-02-terraform-usergen/</link>
+      <pubDate>Thu, 02 Nov 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-11-02-terraform-usergen/</guid>
+      <description>&lt;p&gt;So. I am using Terraform to generate a bunch of users and wanted to modularize it as much as possible. I wanted to get to a point where I could provide a set of &lt;code&gt;aws_iam_user&lt;/code&gt; objects and &lt;code&gt;aws_iam_user_policy_attachments&lt;/code&gt; and have the module cleanly handle this.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>This blog has been migrated to AWS</title>
+      <link>https://i-py.com/posts/2017-01-17-hosted-on-aws/</link>
+      <pubDate>Tue, 17 Jan 2017 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2017-01-17-hosted-on-aws/</guid>
+      <description>&lt;p&gt;Over the holiday weekend I&amp;rsquo;ve made some major changes to this blog! &lt;em&gt;Retroactive apology to anyone who had bookmarked anything on this site!&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Connecting Ubiquiti EdgeRouter to AWS VPC</title>
+      <link>https://i-py.com/posts/2015-08-03-aws_edgerouter/</link>
+      <pubDate>Mon, 03 Aug 2015 12:32:30 -0500</pubDate>
+      
+      <guid>https://i-py.com/posts/2015-08-03-aws_edgerouter/</guid>
+      <description>I&amp;rsquo;m of the mind that many small businesses can benefit greatly from extending their IT systems into the cloud. AWS is price effective (especially on a 1 year reserved term), and offers built-in VPN connectivity options via their VPC.</description>
+    </item>
+    
+  </channel>
+</rss>
