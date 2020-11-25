@@ -32,7 +32,7 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v2
         with:
-          ref: staging
+          ref: ${{github.sha}}
           path: main
           submodules: true
       - name: pwd
