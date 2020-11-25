@@ -21,7 +21,7 @@ So I have to say, I'm just enamored with [Cmder](http://cmder.net/) It's phenome
 
 But man; that Lambda at the command prompt... just irks me.
 
-So how do you fix it? There's two places to edit.
+So how do you fix it? There's two places to edit:
 
 1.  ```<cmder_dir>\config\cmder.lua```  As you can see; I'm partial to the carat (> ) but you can use whatever you want.
 2.  ```<cmder_dir>\vendor\profile.ps1``` This was a bit trickier to track down; but there it is. You may want to edit this so you know when you're in PowerShell; but its up to you.
