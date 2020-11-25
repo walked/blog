@@ -6,6 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - run: apt update
-      - run: apt install hugo
+      - run: sudo apt update
+      - run: sudo apt install hugo
       - run: hugo
