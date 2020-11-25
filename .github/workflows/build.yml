@@ -43,4 +43,4 @@ jobs:
         env: 
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        run: hugo deploy --target=s3-staging-deploy
+        run: cd main && hugo deploy --target=s3-staging-deploy
