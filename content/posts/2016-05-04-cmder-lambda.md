@@ -6,7 +6,6 @@ tags: ["cli"]
 ---
 
 So I have to say, I'm just enamored with [Cmder](http://cmder.net/) It's phenomenal. Elegant, clean, and just truly the best console application I've used. Throw it in a dropbox and you're _set. _SSH, git, grep... all my *nix aliases in one portable package? Sure thing - I'm sold. And it's pretty. Let's customize it a teeny, tiny bit. I wont re-write the featureset, so:
-<!--more-->
 
 > #### Git and others
 > 
