@@ -2,7 +2,7 @@
 title: "Connecting Ubiquiti EdgeRouter to AWS VPC"
 date: 2015-08-03T12:32:30-05:00
 draft: false
-tags: ["networking", "aws"]
+tags: ["networking", "aws", "vpn"]
 ---
 
 
