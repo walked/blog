@@ -1,0 +1,11 @@
+name: build-hugo
+on: [push]
+jobs:
+  build-hugo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: apt update
+      - run: apt install hugo
+      - run: hugo
