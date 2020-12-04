@@ -5,7 +5,7 @@ draft: false
 tags: ["cli"]
 ---
 
-So previously discussed cmder before: [Cmder - Changing the Lambda]({{ site.baseurl }}{% post_url 2016-05-04-cmder-lambda %})
+So previously discussed cmder before.
 
 However, with the newest releace of Cmder there were some file structure changes that were made that need to be updated for fixing the lambda. 
 

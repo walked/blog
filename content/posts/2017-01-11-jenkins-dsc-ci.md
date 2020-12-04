@@ -25,7 +25,7 @@ _Sidenote: I may do a video on this environment configuration a bit later as th
 
 
 So let's run through this at lightspeed 
-![ftl]({{site.url}}/assets/images/misc/ftl.gif)  
+
 
 ### Step 1: Git is configured as a repository for your DSC configuration files
 
@@ -69,7 +69,6 @@ Cool.
 
 ### Step 2: Jenkins is configured to poll that git repository for changes.
 
-![jenkins1]({{site.url}}/assets/images/dsc-jenkins/jenkins-1.jpg) 
 
 Pretty self explanatory.
 
@@ -104,12 +103,10 @@ _Yes I know I skipped 4; that's because I left out pester tests for this particu
 
 Simply use the CIFS Jenkins plugin. 
 
-![jenkins2]({{site.url}}/assets/images/dsc-jenkins/jenkins-2.jpg)  
 
 ### Step 6: Sync your DSC pull server Configuration directory with the SMB Share
 
 ** This is really the simplest step. Just use your imagination. 
-
-![imagination]({{site.url}}/assets/images/misc/imagination.gif)   
+  
 
 Really, the trickiest part is the PowerShell script for Jenkins to build/process the mof files. But the value in having CI setup for your DSC configurations is super duper awesome. No more manual copying.
