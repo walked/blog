@@ -9,8 +9,7 @@ So here we go. A finalized script that will create the VPN profile, as necessary
 
 <!--more-->
 
- _Without needing the VPN connection active_ to set the aforementioned routes. Awesome. In our previous edition I rambled on about the **Add-VpnConnectionRoute** cmdlet here: [http://i-py.com/meraki-vpn-profiles-part-2/](http://i-py.com/meraki-vpn-profiles-part-2/) I may still have some improvements to come, but hopefully it'll be of value to someone as-is. Github: [https://github.com/walked/New-MerakiVPN](https://github.com/walked/New-MerakiVPN) Enjoy
-
+ _Without needing the VPN connection active_ to set the aforementioned routes. Awesome. 
 
 
 ```powershell 

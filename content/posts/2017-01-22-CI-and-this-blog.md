@@ -10,7 +10,7 @@ Hey guys; as I mentioned - I wanted to come back to run through the workflow I h
 
 <!--more-->
 
-[So, as I referenced before:]({{ site.baseurl }}{% post_url 2017-01-17-hosted-on-aws %}) I've moved this blog from WordPress / Shared Hosting, to AWS/S3/Cloudfront.
+So, as I referenced before: I've moved this blog from WordPress / Shared Hosting, to AWS/S3/Cloudfront.
 
 As a part of that, I also revamped my blog publishing workflow and it's been great!
 
